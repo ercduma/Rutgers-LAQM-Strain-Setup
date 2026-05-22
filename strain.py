@@ -31,7 +31,7 @@ Supported Commands:
 
 
 
-host = '128.6.234.242'
+host = 'HOST_IP_ADDRESS'
 port = 10823
 
 filename = 'test.csv'
