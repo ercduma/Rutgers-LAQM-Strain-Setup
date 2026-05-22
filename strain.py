@@ -1,11 +1,7 @@
 import csv
 import time
-import random
 import pyvisa
-import numpy as npy
 import MultiPyVu as mpv
-import pandas as pd
-#from instrument2 import Instrument
 
 
 
