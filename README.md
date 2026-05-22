@@ -9,7 +9,7 @@ Documentation On Straining Setup
 The goal of this setup is to be able to apply force onto a conductive crystal while measuring electrical characteristics of the sample of interest. The equipment used in this setup are:
 
 
-1. QD PPMS Model 6000 and EverCool II and connected desktop
+1. QD PPMS Model 6000/EverCool II and connected desktop
 2. [FC100 Strain Cell](https://razorbillinstruments.com/fc1x0-high-performance-cryogenic-stress-cell/)
 3. [RP100 Power Supply](https://razorbillinstruments.com/rp100/)
 4. [Keithley 2182A Nanovoltmeter and 6221 Current Source combo](https://www.tek.com/en/products/keithley/low-level-sensitive-and-specialty-instruments/series-6200-2182a)
