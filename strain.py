@@ -8,24 +8,31 @@ import MultiPyVu as mpv
 '''
 Supported Commands:
 
+example:
+      ['set_voltage', [[5, -5], 30], 'measure']
+      
+      [<command name>, <parameters>, <mode>]
+
+         The command name and mode must be strings
+
 1. set_temp: [setpoint_K, rate_K_per_min]
    - Sets the temperature of the system to a target value (in Kelvin) at a specified ramp rate.
    - Mode:
        'wait'    : Wait until temperature is steady, no measurement is taken.
-       'measure' : Wait until temperature is steady, then take measurements repeatedly.
+       'measure' : Wait until temperature is steady while taking measurements repeatedly.
 
 2. set_voltage: [[ch1_V, ch2_V], wait_time_s]
    - Sets the voltages of the RP100 channels 1 and 2 to specified values.
    - Waits for the specified number of seconds after setting the voltage.
    - Mode:
        'wait'    : Only wait for the time to elapse, no measurement.
-       'measure' : Wait for the time to elapse, then take measurement(s).
+       'measure' : Wait for the time to elapse, then take measurement.
 
 3. hold: [hold_time_s, delta_t_s]
    - Holds the current temperature and voltages for a specified duration.
    - delta_t_s is the interval between measurements during the hold.
    - Mode:
-       'wait'    : Simply hold, no measurements taken.
+       'wait'    : Hold, no measurements taken.
        'measure' : Take repeated measurements during the hold period.
 '''
 
