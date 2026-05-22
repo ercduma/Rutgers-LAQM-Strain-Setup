@@ -5,8 +5,6 @@ import pyvisa
 import numpy as npy
 import MultiPyVu as mpv
 import pandas as pd
-import matplotlib.pyplot as plt # imports matplotlib from plt library for liveplotting
-from matplotlib.animation import FuncAnimation
 #from instrument2 import Instrument
 
 
@@ -40,7 +38,7 @@ Supported Commands:
 host = '128.6.234.242'
 port = 10823
 
-filename = 'PtSn4_3.csv'
+filename = 'test.csv'
 
 volt_avg_count = 10
 MAX_FAILURES = 6
@@ -49,94 +47,7 @@ FAILURES_BEFORE_TIMEOUT = 3
 
 
 program = [
-    ['hold', [4000, 2], 'measure'],
-    ['hold', [60, 0], 'wait'], 
-    ['set_voltage', [[1,0], 120], 'measure'],
-    ['set_voltage', [[2,0], 120], 'measure'],
-    ['set_voltage', [[3,0], 120], 'measure'],
-    ['set_voltage', [[4,0], 120], 'measure'],
-    ['set_voltage', [[5,0], 120], 'measure'],
-    ['set_voltage', [[6,0], 120], 'measure'],
-    ['set_voltage', [[7,0], 120], 'measure'],
-    ['set_voltage', [[8,0], 120], 'measure'],
-    ['set_voltage', [[9,0], 120], 'measure'],
-    ['set_voltage', [[10,0], 120], 'measure'],
-    ['set_voltage', [[11,0], 120], 'measure'],
-    ['set_voltage', [[12,0], 120], 'measure'],
-    ['set_voltage', [[13,0], 120], 'measure'],
-    ['set_voltage', [[14,0], 120], 'measure'],
-    ['set_voltage', [[15,0], 120], 'measure'],
-    ['set_voltage', [[16,0], 120], 'measure'],
-    ['set_voltage', [[17,0], 120], 'measure'],
-    ['set_voltage', [[18,0], 120], 'measure'],
-    ['set_voltage', [[19,0], 120], 'measure'],
-    ['set_voltage', [[20,0], 120], 'measure'],
-    ['set_voltage', [[21,0], 120], 'measure'],
-    ['set_voltage', [[22,0], 120], 'measure'],
-    ['set_voltage', [[23,0], 120], 'measure'],
-    ['set_voltage', [[24,0], 120], 'measure'],
-    ['set_voltage', [[25,0], 120], 'measure'],
-    ['set_voltage', [[26,0], 120], 'measure'],
-    ['set_voltage', [[27,0], 120], 'measure'],
-    ['set_voltage', [[28,0], 120], 'measure'],
-    ['set_voltage', [[29,0], 120], 'measure'],
-    ['set_voltage', [[30,0], 120], 'measure'],
-    ['set_voltage', [[31,0], 120], 'measure'],
-    ['set_voltage', [[32,0], 120], 'measure'],
-    ['set_voltage', [[33,0], 120], 'measure'],
-    ['set_voltage', [[34,0], 120], 'measure'],
-    ['set_voltage', [[35,0], 120], 'measure'],
-    ['set_voltage', [[36,0], 120], 'measure'],
-    ['set_voltage', [[37,0], 120], 'measure'],
-    ['set_voltage', [[38,0], 120], 'measure'],
-    ['set_voltage', [[39,0], 120], 'measure'],
-    ['set_voltage', [[40,0], 120], 'measure'],    
-    ['set_voltage', [[0,0], 240], 'measure'],
-    ['hold', [60, 0], 'wait'],
-    ['set_temp',[100, 1], 'measure'],
-    ['hold', [3600, 2], 'measure'],
-    ['hold', [60, 0], 'wait'],
-    ['set_voltage', [[1,0], 120], 'measure'],
-    ['set_voltage', [[2,0], 120], 'measure'],
-    ['set_voltage', [[3,0], 120], 'measure'],
-    ['set_voltage', [[4,0], 120], 'measure'],
-    ['set_voltage', [[5,0], 120], 'measure'],
-    ['set_voltage', [[6,0], 120], 'measure'],
-    ['set_voltage', [[7,0], 120], 'measure'],
-    ['set_voltage', [[8,0], 120], 'measure'],
-    ['set_voltage', [[9,0], 120], 'measure'],
-    ['set_voltage', [[10,0], 120], 'measure'],
-    ['set_voltage', [[11,0], 120], 'measure'],
-    ['set_voltage', [[12,0], 120], 'measure'],
-    ['set_voltage', [[13,0], 120], 'measure'],
-    ['set_voltage', [[14,0], 120], 'measure'],
-    ['set_voltage', [[15,0], 120], 'measure'],
-    ['set_voltage', [[16,0], 120], 'measure'],
-    ['set_voltage', [[17,0], 120], 'measure'],
-    ['set_voltage', [[18,0], 120], 'measure'],
-    ['set_voltage', [[19,0], 120], 'measure'],
-    ['set_voltage', [[20,0], 120], 'measure'],
-    ['set_voltage', [[21,0], 120], 'measure'],
-    ['set_voltage', [[22,0], 120], 'measure'],
-    ['set_voltage', [[23,0], 120], 'measure'],
-    ['set_voltage', [[24,0], 120], 'measure'],
-    ['set_voltage', [[25,0], 120], 'measure'],
-    ['set_voltage', [[26,0], 120], 'measure'],
-    ['set_voltage', [[27,0], 120], 'measure'],
-    ['set_voltage', [[28,0], 120], 'measure'],
-    ['set_voltage', [[29,0], 120], 'measure'],
-    ['set_voltage', [[30,0], 120], 'measure'],
-    ['set_voltage', [[31,0], 120], 'measure'],
-    ['set_voltage', [[32,0], 120], 'measure'],
-    ['set_voltage', [[33,0], 120], 'measure'],
-    ['set_voltage', [[34,0], 120], 'measure'],
-    ['set_voltage', [[35,0], 120], 'measure'],
-    ['set_voltage', [[36,0], 120], 'measure'],
-    ['set_voltage', [[37,0], 120], 'measure'],
-    ['set_voltage', [[38,0], 120], 'measure'],
-    ['set_voltage', [[39,0], 120], 'measure'],
-    ['set_voltage', [[40,0], 120], 'measure'],    
-    ['set_voltage', [[0,0], 240], 'measure']
+# Put your program here
 ]
 
 
@@ -150,67 +61,74 @@ KEITHLEY_ADDR = 'GPIB0::16::INSTR'
 # ------------------------------------------------------------------
 # VISA resource setup
 # ------------------------------------------------------------------
-rm = pyvisa.ResourceManager()
-power_supply = rm.open_resource(RP100_ADDR)
+rm = pyvisa.ResourceManager() #initialize resource manager
+power_supply = rm.open_resource(RP100_ADDR) #open resource
 meter = rm.open_resource(METER_ADDR)
 keithley = rm.open_resource(KEITHLEY_ADDR)
 
 # ------------------------------------------------------------------
 # LCR meter configuration
 # ------------------------------------------------------------------
-meter.write('FREQ 100000')
+meter.write('FREQ 100000') #Set excitation frequency
 meter.write('FUNC:IMP:TYPE CPD')
-meter.write('VOLT:LEV 1')
-meter.write('APER LONG,3')
+meter.write('VOLT:LEV 1') #Set excitation voltage amplitude
+meter.write('APER LONG,3') #Long measurements and average 3 of them
 
 # ------------------------------------------------------------------
 # RP100 power supply configuration
 # ------------------------------------------------------------------
-power_supply.write('OUTP1 1')
+power_supply.write('OUTP1 1') #Engage outputs
 power_supply.write('OUTP2 1')
-power_supply.write('SOUR1:VOLT:SLEW 100')
-power_supply.write('SOUR2:VOLT:SLEW 100')
+power_supply.write('SOUR1:VOLT:SLEW 10') #Set output slew to 10V/s
+power_supply.write('SOUR2:VOLT:SLEW 10')
 
 # ------------------------------------------------------------------
 # Keithley configuration
 # ------------------------------------------------------------------
+
 keithley.write('*RST') #restores 6221 defaults
 keithley.write("TRAC:CLE") 
 keithley.write('SYST:COMM:SER:SEND "REN"')
 
 #setup2182A
 voltrange = 0.01 
-keithley.write('SYST:COMM:SER:SEND "VOLT:RANG %f"' % voltrange) #sets 2V range for 2182a 
+keithley.write('SYST:COMM:SER:SEND "VOLT:RANG %f"' % voltrange) #sets range for 2182a 
 rate = 1
 keithley.write('SYST:COMM:SER:SEND "VOLT:NPLC %f"' % rate) #Set rate to 1PLC for 2182a
 
+
+
 #setup6221Delta
 keithley.write('*RST') #restores 6221 defaults
+keithley.write('DISP:ENAB 0') #Turn off display for fastest operation
 keithley.write('SOUR:DELT:HIGH 1e-3') #sets high source current value to 1mA
-keithley.write('SOUR:DELT:COUN 1') #Sets Delta count to 65536
-keithley.write('SOUR:CURR:RANGE:AUTO 1')
-keithley.write('TRAC:POIN 1') #sets buffer to 65536 points
+keithley.write(f'SOUR:DELT:COUN {volt_avg_count:d}') #Set buffer size for number of measurments
+keithley.write('SOUR:CURR:RANGE:AUTO 1') 
+keithley.write(f'TRAC:POIN {volt_avg_count:d}') #Set number of delta measurements per run
+keithley.write('CALC:STAT 1') #Enable buffer statistic
+keithley.write('CALC:FORM MEAN') #Set statistic to buffer MEAN
 keithley.write('SOUR:DELT:ARM') #Arms Delta
+time.sleep(1)
 
 # ------------------------------------------------------------------
 # Measurement helper functions
 # ------------------------------------------------------------------
-def get_lcr_capacitance():
+def get_lcr_capacitance(): #read for LCR capacitance
     reply = meter.query('FETCH?')
     chunks = reply.split(',')
-    cap_pf = float(chunks[0]) * 1e12  # convert F → pF
+    cap_pf = float(chunks[0]) * 1e12  # convert F to pF
     d = float(chunks[1])
     return cap_pf, d
 
-def get_lcr_exvolt():
+def get_lcr_exvolt(): #read for LCR excitation voltage
     return float(meter.query('FETC:SMON:VAC?'))
 
-def get_rp100_volt():
+def get_rp100_volt(): #Gets power supply voltages, these from the built in testing circuit and not completely accurate to the voltage you write
     v1 = float(power_supply.query('MEAS1:VOLT?'))
     v2 = float(power_supply.query('MEAS2:VOLT?'))
     return v1,v2
 
-def set_rp100_volt(channel, temp, volt):
+def set_rp100_volt(channel, temp, volt): #Set voltages for power supply, has temperature safety.
     if temp > 250:
         lower, upper = -20, 120
     elif temp > 100:
@@ -225,9 +143,9 @@ def set_rp100_volt(channel, temp, volt):
     power_supply.write(f'SOUR{channel}:VOLT {volt_clamp}')
 
 # ------------------------------------------------------------------
-# Temperature error handling
+# Error handling
 # ------------------------------------------------------------------
-def reset_client_connection(client, failures):
+def reset_client_connection(client, failures): #helper function for when there is an error
     print("\nConnection failure detected. Resetting client...")
     reset_attempts = 0
     while reset_attempts < FAILURES_BEFORE_TIMEOUT:
@@ -244,9 +162,15 @@ def reset_client_connection(client, failures):
         except Exception:
             reset_attempts += 1
             print(f"Reconnect attempt {reset_attempts} failed.")
+
+    power_supply.write('SOUR1:VOLT 0')
+    power_supply.write('SOUR2:VOLT 0')
+    time.sleep(5)
+    power_supply.write('OUTP1 0')
+    power_supply.write('OUTP2 0')
     raise RuntimeError("Failed to reconnect to MultiPyVu client after multiple attempts.")
 
-def safe_get_temperature_with_failures(client, last_temp, failures):
+def safe_get_temperature_with_failures(client, last_temp, failures): #get temperature with client resetting in case of error
     try:
         temp, status = client.get_temperature()
         if temperature_invalid(temp, last_temp):
@@ -259,7 +183,7 @@ def safe_get_temperature_with_failures(client, last_temp, failures):
             client, failures = reset_client_connection(client, failures)
         return None, None, failures, client
 
-def temperature_invalid(temp, last_temp):
+def temperature_invalid(temp, last_temp): #If this returns false, then something is very very wrong
     if temp <= 0.0:
         return True
     if last_temp is not None and abs(temp - last_temp) > 20:
@@ -269,16 +193,15 @@ def temperature_invalid(temp, last_temp):
 # ------------------------------------------------------------------
 # Keithley measurement helper
 # ------------------------------------------------------------------
-def take_keithley_measurement():
-    volt_avg = []
-    for i in range(volt_avg_count):
-        keithley.write('INIT:IMM') #starts delta measurements
-        keithley.query('SENS:DATA?')
-        temp_var = str(keithley.query('TRAC:DATA?')).replace('+','')
-        var2 = float(temp_var.split(',')[0])
-        volt_avg.append(var2)
-        time.sleep(0.05)
-    return sum(volt_avg)/len(volt_avg)
+def take_keithley_measurement(): #measurement command for keithley combo
+    keithley.write('INIT:IMM') #starts delta measurements
+    time.sleep(volt_avg_count*0.1)
+    keithley.write('CALC:IMM')
+    time.sleep(0.1)
+    temp_var = str(keithley.query('CALC:DATA?')).replace('+','')
+    #temp_var = str(keithley.query('TRAC:DATA?')).replace('+','')
+    var2 = float(temp_var.split(',')[0])
+    return var2
 
 
 # ------------------------------------------------------------------
@@ -300,6 +223,9 @@ with open(filename, 'w', newline='') as file:
 
     client = mpv.Client(host, port)
     client.open()
+
+    temp, status, failures, client = safe_get_temperature_with_failures(client, last_valid_temp, failures)
+    last_valid_temp = temp
 
     try:
 
@@ -390,19 +316,16 @@ with open(filename, 'w', newline='') as file:
 
     finally:
         client.close_client()
+        keithley.write('*RST') #restores 6221 defaults
+        keithley.write("TRAC:CLE") 
+        power_supply.write('SOUR1:VOLT 0')
+        power_supply.write('SOUR2:VOLT 0')
+        time.sleep(5)
+        power_supply.write('OUTP1 0')
+        power_supply.write('OUTP2 0')
 
-# ------------------------------------------------------------------
-# Hardware shutdown
-# ------------------------------------------------------------------
-keithley.write('*RST') #restores 6221 defaults
-keithley.write("TRAC:CLE") 
-power_supply.write('SOUR1:VOLT 0')
-power_supply.write('SOUR2:VOLT 0')
-time.sleep(5)
-power_supply.write('OUTP1 0')
-power_supply.write('OUTP2 0')
+        keithley.close()
+        power_supply.close()
+        meter.close()
+        rm.close()
 
-keithley.close()
-power_supply.close()
-meter.close()
-rm.close()
