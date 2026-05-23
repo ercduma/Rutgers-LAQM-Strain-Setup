@@ -109,6 +109,16 @@ Useful links:
 
 5. Connect to the wires from the end of the strain cell to their respective connectors in the probe. The connections are color coded. The probe is ready to be inserted into the chamber.
 
+## RP100 Power Supply
+
+The RP100 power supply is designed by Razorbill to work specifically with their strain cells. It is a 4 quadrant power supply meaning that its two channels are able to source and sink up to 6mA while with a voltage output of ±210V. On the front, there are four indicator lights. The ones above each output connectors are solid green when the output is on and steady or flash when the channel is slewing. The back side has has a USB type B port for serial communication to a computer and a C13 mains connector with a switch below it.
+
+When connecting to the probe, channel 1 is connected to the compression stack and channel 2 is connected to the tension stack with the two provided cables.
+
+SCPI interpreted by the power supply are explained in the documentation from razorbill.
+(https://razorbillinstruments.com/wp-content/uploads/2018/10/RP100-Manual-v6.1-1.pdf)
+
+## Keysight E4980AL LCR Meter.
 
 
 
