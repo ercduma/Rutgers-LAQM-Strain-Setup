@@ -1,8 +1,9 @@
 # Rutgers-LAQM-Strain-Setup
 Documentation On Straining Setup
 
+<p align="center">
 <img width="737" height="600" alt="image" src="https://github.com/user-attachments/assets/f803e9c0-7bec-48bd-a185-4abd19861b2a" />
-
+</p>
 
 ## Overview Of Strain Cell Setup
 
@@ -60,15 +61,18 @@ The FC100 uses toothed sample plates to transfer large forces into the sample. *
 
 The force response from the cell is related to capacitance. To convert force to capacitance, the given formula from Razorbill is:
 
+<p align="center">
 <img width="358" height="118" alt="image" src="https://github.com/user-attachments/assets/2814450d-1cb1-4251-94d5-48cbb8227df5" />
+</p>
 
 For our strain cell, alpha is 1555 NpF, fo is 1368N, Cp is 0.0822 pF and C is read capacitance. Solving for f will give you your sample tension force in newtons. These parameters may not not the same across each manufactured cell. A compressive force will see the capacitance increase while a tensile force will see the capacitance decrease. 
 
 ***It is important to note that the zero force capacitance will decrease was the temperature decreases. Therefor, it a good idea make a claibration curve of zero force capacitance measurments across a temperature range. Razorbill includes information at the end of their [AP006](https://razorbillinstruments.com/wp-content/uploads/2023/06/AP006-Capacitor-performance-v2-1-Web.pdf) document. It is recommended you read this as it explains how to get the best performance out of your device.***
 
 ***For force sensors like on the FC100, Razorbill also notes that alpha, the gain of the sensor, is also temperature dependent. Below, alpha290K is 1555 NpF for our device and T is in Kelvin.***
+<p align="center">
 <img width="744" height="66" alt="image" src="https://github.com/user-attachments/assets/88256fc6-7fca-4ae9-a1e4-4b87c77bbb97" />
-
+</p>
 
 ## Mounting Your Sample
 
@@ -117,7 +121,9 @@ Useful links:
 
 3. Feed the four wires on the end of the FC100 through the thermal link plate. ***The thermal link plate has a chamfered edge that needs to be oriented to face downward when inserted into the cryostat.*** Then feed the end of the wires through the two holes on the end of the probe. Mount the cell to the probe with the four required screw. There are 4 holes on the end of the strain cell.
 
+<p align="center">
 <img width="185" height="146" alt="image" src="https://github.com/user-attachments/assets/09db11f7-5f36-444f-9735-0fefb05b2713" />
+</p>
 
 5. Connect to the wires from the end of the strain cell to their respective connectors in the probe. The connections are color coded. The probe is ready to be inserted into the chamber.
 
@@ -156,8 +162,110 @@ Manuals can be found online for each device and for the SCPI commands that the d
 
 ## Python Scripts
 
-There are two python scripts that are useful. 
+There are two python scripts that are useful.
+
+<details>
+<summary>strain.py</summary>
+The [strain.py](https://github.com/ercduma/Rutgers-LAQM-Strain-Setup/blob/main/strain.py) file is the main script for running the experiments. The experiment is controlled with specific commands that are written in a specifc format. The top of the file explaines the supported commands.
+
+Below the first section of comments, you will see
+
+```python
+host = 'HOST_IP_ADDRESS'
+port = 10823
+
+filename = 'test.csv'
+
+volt_avg_count = 10
+MAX_FAILURES = 6
+FAILURE_RESET_TIME = 10
+FAILURES_BEFORE_TIMEOUT = 3
+```
+The IP address must be changed to be the IPv4 address of your PPMS computer hosting the server. You can also change the port number. The file name to can be changes and must end in '.csv'.
+
+> Your csv file will output data points under the header row: 'Time(s)', 'LoopTime(s)', 'Temperature(K)', 'TempStatus', 'Voltage', 'LcrCap(pF)', 'LcrD', 'LcrExcitation(V)', 'RP100_V1(V)', 'RP100_V2(V)'. 'Time(s)' is the program time when a measurement was taken. 'LoopTime(s)' is how long a measurement took and is usefult for debugging. 'Temperature(K)' is your chamber temperature and 'TempStatus' is useful for debugging. 'Voltage' is the voltage across your sample from the nanovolt meter which you can convert to ohms based on the injected current. 'LcrCap(pF)' is your force feedback in capacitance, 'LcrD' is a loss factor, and 'LcrExcitation(V)' is useful for debugging. 'RP100_V1(V)' and 'RP100_V2(V)' are voltages read from the measurement circuit on the RP100 and is mainly used for debugging. 
+
+volt_avg_amount refers to the number of measurments you want to average from the keithley combo. 
+
+The other 3 parameters are for the error handling and don't need to be changed.
+
+Below this you will see a program array. The program must be written inside the program array.
+
+```python
+program = [
+[<command name 1>, <parameters>, <mode>],
+[<command name 2>, <parameters>, <mode>],
+[<command name 3>, <parameters>, <mode>],
+[<command name 4>, <parameters>, <mode>],
+.
+.
+.
+.
+[<command name N>, <parameters>, <mode>]
+]
+
+```
+
+Assuming channel 1 and 2 on the RP100 are connected to compression and tension stack respectively and the starting temperature is at 300K and with 0V on each stack, an example experiment might run in this order.:
+1. Bring chamber down to 2K while taking measurements
+   - 300K to 50K is at 5K per minute
+   - 50K to 10K is 2K per minute
+   - 10K to 2K is 1K per minute
+3. Wait for 1 hour while measuring every 30 seconds. 
+4. Compress the sample under test in increments of 50 volts using the full range of the device and take measurements after waiting 3 minutes after each increment.
+5. Bring back the stack voltages to zero volts without measuring.
+6. Bring the temperature back to 300K at 2K per minute without measuring.
+
+The program will look like the following:
+```python
+program = [
+['set_temp', [50, 5], 'measure'],
+['set_temp', [10, 2], 'measure'],
+['set_temp', [2, 1], 'measure'],
+['hold', [3600, 30], 'measure'],
+['set_voltage', [[0,0], 180], 'measure'],
+['set_voltage', [[50,0], 180], 'measure'],
+['set_voltage', [[50,-50], 180], 'measure'],
+['set_voltage', [[100,-50], 180], 'measure'],
+['set_voltage', [[100,-100], 180], 'measure'],
+['set_voltage', [[150,-100], 180], 'measure'],
+['set_voltage', [[150,-150], 180], 'measure'],
+['set_voltage', [[200,-150], 180], 'measure'],
+['set_voltage', [[200,-200], 180], 'measure'],
+['set_voltage', [[100,-100], 180], 'wait'],
+['set_voltage', [[0,0], 180], 'wait'],
+['set_temp', [300, 2], 'wait'],
+]
+```
+***In real life, you wouldn't run your experiment like this with huge voltage jumps. You can see that if you do smaller increments, the program can grow very large. The script will be updated in the future to condense many lines of small voltage increments to 1 line.***
+
+Below this, you will see the instrument addressses. You will have to change the addresses based to what is set up on your instruments. If you use NI-VISA implementation and have the NI MAX program, you can easily find all of the addresses of your connected instruments in the Devices and Interfaces tab. 
+   
+</details>
 
 
+<details>
+<summary>rp100_check.py</summary>
+This is a basic program that can list the recognized instruments connected to the computer.
+The program will fail after listing the resources if the address of the power supply is not correct. Once you change the variable to the correct address, the program will be able to read a voltage output of the power supply. It will then set the voltages back to zero and turn off the outputs.
 
+If in any case the main program fails, it may for some reason not set the output voltages of the power supply to zero. In that case, you can run this program to set the voltages to zero. You can also make your own basic program to do this. 
+</details>
+
+## Running a Experiment
+
+***It is highly recommeneded that both data computers are connected to the LAN through an ethernet connection. WIFI IS UNRELIABLE AND ANY MISSED PACKETS IN THE COMMUNICATION BETWEEN THE SERVER HOST AND THE CLIENT RESOLVE IN A PROGRAM CRASH.***
+
+1. After all the instruments are connected properly and the FC100 is installed in the chamber, open the MultiVu program.
+2. In a powershell window, run
+   ```python
+      python -m MultiPyVu
+   ```
+> This requires you to have python and the MultiPyVu module installed on the host computer.
+
+   This will pop up a GUI with you computer's IP and the communication port. You can change      the port directly here as the box is editable. This IP address and port must match the        ones in strain.py program. You can press the start button and then open the server. 
+
+3. Go to your data computer and after making your program, execute the strain.py script in the terminal. Your experiment will begin to run immediately. The terminal will also print out some information as the program runs.
+
+4. After the program ends, you will be able to find your named .csv file with all of your data. You will also see some log files that are generated by MultiPyVu on both computers which are useful for debugging for some program failures.   
 
