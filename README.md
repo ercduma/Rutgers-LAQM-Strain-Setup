@@ -54,9 +54,21 @@ The cells are thermally compensated to match titanium thermal expansion, minimiz
 
 ***The FC100 has maximum ecommended voltage limits that depend on temperature. See the offical documentation for the numbers.***
 
-The cell must never be cooled or operated if condensation is present. Humidity shifts the capacitance calibration and can require several days in vacuum to stabilize. ***Razorbill recommends pumping the cell under vacuum for at least a day before precision measurements.***
+The cell must never be cooled or operated if condensation is present. Humidity effects the capacitance and can require several days in vacuum to stabilize. ***Razorbill recommends pumping the cell under vacuum for at least a day before precision measurements.***
 
 The FC100 uses toothed sample plates to transfer large forces into the sample. ***The plate spacing is adjustable in discrete 1/3 mm increments over approximately 0.3–2.5 mm gap spacing.*** Razorbill explains in their documentation different ways to mount the sample.
+
+The force response from the cell is related to capacitance. To convert force to capacitance, the given formula from Razorbill is:
+
+<img width="358" height="118" alt="image" src="https://github.com/user-attachments/assets/2814450d-1cb1-4251-94d5-48cbb8227df5" />
+
+For our strain cell, alpha is 1555 NpF, fo is 1368N, Cp is 0.0822 pF and C is read capacitance. Solving for f will give you your sample tension force in newtons. These parameters may not not the same across each manufactured cell. A compressive force will see the capacitance increase while a tensile force will see the capacitance decrease. 
+
+***It is important to note that the zero force capacitance will decrease was the temperature decreases. Therefor, it a good idea make a claibration curve of zero force capacitance measurments across a temperature range. Razorbill includes information at the end of their [AP006](https://razorbillinstruments.com/wp-content/uploads/2023/06/AP006-Capacitor-performance-v2-1-Web.pdf) document. It is recommended you read this as it explains how to get the best performance out of your device.***
+
+***For force sensors like on the FC100, Razorbill also notes that alpha, the gain of the sensor, is also temperature dependent. Below, alpha290K is 1555 NpF for our device and T is in Kelvin.***
+<img width="744" height="66" alt="image" src="https://github.com/user-attachments/assets/88256fc6-7fca-4ae9-a1e4-4b87c77bbb97" />
+
 
 ## Mounting Your Sample
 
@@ -92,7 +104,7 @@ The H20E 2-part epoxy is used connect gold bonding wires to the sample from the 
 
 In order to put the FC100 into the cryostat, you must attach it to a probe. Razorbill has a [PPMS P450 Probe Conversion Kit](https://razorbillinstruments.com/ppms-integration/) or they offer their new [CRYOINSERT](https://razorbillinstruments.com/cryoinsert-razorbill-instruments-cryostat-probe-for-ppms-and-dynacool-cryostats/) which is compatible with the FC100. 
 
-The P450 probe has 4 connector sockets on the octogonal black box on the end. There are two connections for power supply and we have attached two BNC female connectors for connections the cells capacitor. 
+The P450 probe has 4 connector sockets on the octogonal black box on the end. There are two connections for power supply and we have attached two BNC female connectors for connections the cell's capacitor. 
 
 Useful links:
 - [PPMS Insert User Guide](https://razorbillinstruments.com/wp-content/uploads/2023/11/PPMS1-User-guide-v6.1-Web.pdf)
@@ -118,9 +130,33 @@ When connecting to the probe, channel 1 is connected to the compression stack an
 SCPI interpreted by the power supply are explained in the documentation from razorbill.
 (https://razorbillinstruments.com/wp-content/uploads/2018/10/RP100-Manual-v6.1-1.pdf)
 
-## Keysight E4980AL LCR Meter.
+## Keysight E4980AL LCR Meter
+
+The E4980AL LCR meter is used in this setup to read a capacitance reading from the FC100 strain cell. As stated above in the [FC100 section](https://github.com/ercduma/Rutgers-LAQM-Strain-Setup/edit/main/README.md#fc100-strain-cell) the capacitance is inversely proportional the tensile force applied to the sample.
+
+The front of the LCR meter had four BNC female terminals. The terminals Hcur and Hpot must be connected to the high terminal on the P450 probe while Lcur and Lpot must be connected to the low terminal.
+
+The back of the LCR meter has a C13 mains connector and several other inputs for computer control. In our lab, we specifically use the GPIB connector for communication with the device. 
+
+You can use find manuals online on how to use the device and on SCPI commands.
+(https://www.cmc.ca/wp-content/uploads/2019/07/E4980A-User-Guide.pdf)
 
 
+## Keithley 2182A Nanovoltmeter and 6221 Current Source combo
+
+The Keithley 2182A and 6221 operate like a single instrument when connected. It has the capability to take low resistance measurements without much power dissipation in the device/sample under test. 
+
+To connect the two devices, you must use RS-232 and trigger link connections on the back side. The current source will have a triax cable to alligator clip terminations for excitation and the nanovoltmeter has a low thermal input cable with alligator clips connected for voltage readings. 
+
+The two together have the capability to measure resistances from 10 nano-ohms to 100 Mega-Ohms. The delta mode has the ability to make accurate low resistance measurements by eliminating the effects of thermal offsets and reduces noise down to 30nV peak-to-peak noise  for each reading; Multiple readings can be averaged for greater noise reduction.
+
+In our setup, we use the GPIB connection in the back of the current source to communicate with the two devices. 
+
+Manuals can be found online for each device and for the SCPI commands that the devices use. 
+
+## Python Scripts
+
+There are two python scripts that are useful. 
 
 
 
