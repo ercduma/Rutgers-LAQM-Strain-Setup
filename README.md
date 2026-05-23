@@ -18,7 +18,7 @@ The goal of this setup is to be able to apply force onto a conductive crystal wh
 
 The entire experiment is controlled through a python script run on the data computer. Connection between the two computers is enabled through the MultiPyVu library and the two devices must be connected to the LAN. The RP100 power supply is used to control the force applied to the sample on the FC100 strain cell. The force applied to the sample is readback through capacitance which is collected through the E4980AL LCR meter. Electrical transport is done using the Keithley 2182A nanovoltmeter and 6221 current source combo. The EverCool II chamber houses the FC100 during operation and is used to adjust temperature and to apply magnetic field. 
 
-***This setup can be implemented using only the PPMS desktop, though we ran into some issues with mulitple GPIB connections not being recognized which drove us to use a two computer setup. Using this setup will require only slight changes in the main code file - specifically an initial line to initialize the host and then after the initial client initialization. More information can be found in the [MultiPyVu] (https://pypi.org/project/MultiPyVu/) module used in the python script. The with-blocks were not used for client reinitialization.***
+***This setup can be implemented using only the PPMS desktop, though we ran into some issues with mulitple GPIB connections not being recognized which drove us to use a two computer setup. Using this setup will require only slight changes in the main code file - specifically an initial line to initialize the host and then after the initial client initialization. More information can be found in the [MultiPyVu](https://pypi.org/project/MultiPyVu/) module used in the python script. The with-blocks were not used for client reinitialization.***
 
 ## Software Requirments
 
@@ -26,8 +26,8 @@ They scripts requires at least python version 3.7 or higher as per the module re
 
 The **required modules** that need to be installed are:
 
-1. [csv](https://docs.python.org/3/library/csv.html)
-2. [time](https://docs.python.org/3/library/time.html)
+1. [Csv](https://docs.python.org/3/library/csv.html)
+2. [Time](https://docs.python.org/3/library/time.html)
 3. [PyVISA](https://pyvisa.readthedocs.io/en/latest/index.html)
 4. [MultiPyVu](https://pypi.org/project/MultiPyVu/)
 
@@ -40,7 +40,7 @@ Initial connection with the RP100 power supply should install drivers though it 
 
 ## FC100 Strain Cell
 
-The FC100 strain cell is a high force strain cell specifically designed to be used for millimeter sized samples in a 25mm bore cyrostat like the QD PPMS EverCool II or PPMS Dynacool. The cell has a full titanium construction and is safe to be used in a magnetic field. A WP101 wiring platform from Razorbill is used for electrical connections sample of interest. 
+The FC100 strain cell is a high force strain cell specifically designed to be used for millimeter sized samples in a 25mm bore cyrostat like the QD PPMS EverCool II or PPMS Dynacool. The cell has a full titanium construction and is safe to be used in a magnetic field. A WP100 wiring platform from Razorbill is used for electrical connections sample of interest. 
 
 It is wise to review and be familiar with cell's documentation before use. 
 
@@ -73,14 +73,45 @@ The Stycast 2850FT and CAT 23LV is a 2-part epoxy is not specifically designed f
 The H20E 2-part epoxy is used connect gold bonding wires to the sample from the wiring platform. 
 
 **(A) Mounting Procedure (with the basic sample plates and optional spacers):**
+
 1. Shape your sample, typically into a matchstick shape or have it necked through machining and etching.
-2. Place your sample plates on the FC100 and figure out the best spacing based on the geometry of your sample.
 
-> At this point you must decide whether you are going to use the upper mounting plates. Using the upper mounting plates offers higher strain homogeneity. You will have to sand your titanium spacers to match the thickness of your epoxy between you  + sample. This protects your sample when the upper plate is tightend down. You may decide to buy spacer sphere particles to mix into your epoxy and this will give an accurate distance between your sample and sample plates. You can also use cotton fibers or paint and cure an initial layer of epoxy. This is less accurate and will and it will require you to do some extra work to match the thicknesses while sanding the titanium spacers. If mounting without the top sample plates, it is generally easiest to paint a very thin layer of Stycast and Catalyst epoxy on the sample plates and then cure it. You can remove the sample plates when you do this. It is enough to cure ONLY the sample plates for 30 to 60 minutes at 80C as the application is very thin. If using cotton fibers or spacer spheres, it is generally easiest to mount the sample with the holders tightend down and generally you will not cure until the sample is mounted. ***If you do not have a very fine brush, using a plucked eyelash works very well and allows for very fine application.***
+> Samples are generaly a few mm in length, and ~100 x 300 µm in cross section.
+   
+3. Place your sample plates on the FC100 and figure out the best spacing based on the geometry of your sample.
 
-4. After mounting the sample using any of the various different methods, cure your mounted by either waiting 24 hours or can accelerate it by putting it in an oven for 2 to 4 hours at 65C.
+> At this point you must decide whether you are going to use the upper mounting plates. Using the upper mounting plates offers higher strain homogeneity. You will have to sand your titanium spacers to match the thickness of your epoxy between you  + sample. This protects your sample when the upper plate is tightend down. You may decide to buy spacer sphere particles to mix into your epoxy and this will give an accurate distance between your sample and sample plates. You can also use cotton fibers or paint and cure an initial layer of epoxy. This is less accurate and will and it will require you to do some extra work to match the thicknesses while sanding the titanium spacers. If mounting without the top sample plates, it is generally easiest to paint a very thin layer of Stycast and Catalyst epoxy on the sample plates and then cure it. You can remove the sample plates when you do this. It is enough to cure ONLY the sample plates for 30 to 60 minutes at 80C as the application is very thin. If using cotton fibers or spacer spheres, it is generally easiest to mount the sample with the holders tightend down and generally you will not cure until the sample is mounted. ***If you do not have a very fine brush, using a plucked eyelash works very well and allows for very fine application. Apply the epoxy slowly and gentley so you do not shift the sample when its aligned.***
 
-5. Connecting the bonding wires is though and will require practice and patience. 
+4. After mounting the sample using any of the various different methods, cure your mounted by either waiting 24 hours or can accelerate it by putting it in an oven for 2 to 4 hours at 65C. If curing at anything other than ambient temperature, make sure to short each piezo stacks with resistors.
+
+5. Connecting the gold bonding wires is tough and will require practice and patience. You can solder the gold wires on one end to the pads on the wiring platform using a leaded solder. You do not need to bring your iron to a very hot temperature as the pads are very small and be quick. After, attach wiring platform to the strain cell.
+
+6. Gentley bend the other end of the gold wires to their respective spots on the mounted sample. Prepare the epoxy and apply slowly and precisely where the ends of the wires meet the sample. After application, cure the entire cell in an oven at 80C for three hours. Again, make sure to short each piezo stacks with resistors.
+
+## Connecting the Strain Cell to the Probe
+
+In order to put the FC100 into the cryostat, you must attach it to a probe. Razorbill has a [PPMS P450 Probe Conversion Kit](https://razorbillinstruments.com/ppms-integration/) or they offer their new [CRYOINSERT](https://razorbillinstruments.com/cryoinsert-razorbill-instruments-cryostat-probe-for-ppms-and-dynacool-cryostats/) which is compatible with the FC100. 
+
+The P450 probe has 4 connector sockets on the octogonal black box on the end. There are two connections for power supply and we have attached two BNC female connectors for connections the cells capacitor. 
+
+Useful links:
+- [PPMS Insert User Guide](https://razorbillinstruments.com/wp-content/uploads/2023/11/PPMS1-User-guide-v6.1-Web.pdf)
+- [P450 Conversion Guide](https://razorbillinstruments.com//wp-content/uploads/2020/04/PPMS1-Installation-guide-v5.pdf)
+
+***For the P450 Probe***
+1. If using the wiring platfrom, first connect the miniature male 4 pin header style connector to the respective female socket labled1. Make sure the bevel on both ends line up.
+   
+2. Attach the puck/bump guard to the FC100 using the two required screw.
+
+3. Feed the four wires on the end of the FC100 through the thermal link plate. ***The thermal link plate has a chamfered edge that needs to be oriented to face downward when inserted into the cryostat.*** Then feed the end of the wires through the two holes on the end of the probe. Mount the cell to the probe with the four required screw. There are 4 holes on the end of the strain cell.
+
+<img width="185" height="146" alt="image" src="https://github.com/user-attachments/assets/09db11f7-5f36-444f-9735-0fefb05b2713" />
+
+5. Connect to the wires from the end of the strain cell to their respective connectors in the probe. The connections are color coded. The probe is ready to be inserted into the chamber.
+
+
+
+
 
 
 
