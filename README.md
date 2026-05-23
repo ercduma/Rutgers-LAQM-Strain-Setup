@@ -5,6 +5,9 @@ Documentation On Straining Setup
 <img width="737" height="600" alt="image" src="https://github.com/user-attachments/assets/f803e9c0-7bec-48bd-a185-4abd19861b2a" />
 </p>
 
+***DISCLAIMER***
+This is an on-going project and still requires more development and fine tuning. 
+
 ## Overview Of Strain Cell Setup
 
 The goal of this setup is to be able to apply force onto a conductive crystal while measuring electrical characteristics of the sample of interest. The equipment used in this setup are:
