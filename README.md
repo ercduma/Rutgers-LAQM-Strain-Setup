@@ -237,7 +237,7 @@ program = [
 ['set_voltage', [[200,-200], 180], 'measure'],
 ['set_voltage', [[100,-100], 180], 'wait'],
 ['set_voltage', [[0,0], 180], 'wait'],
-['set_temp', [300, 2], 'wait'],
+['set_temp', [300, 2], 'wait']
 ]
 ```
 ***In real life, you wouldn't run your experiment like this with huge voltage jumps. You can see that if you do smaller increments, the program can grow very large. The script will be updated in the future to condense many lines of small voltage increments to 1 line.***
