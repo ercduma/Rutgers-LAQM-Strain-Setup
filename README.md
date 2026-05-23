@@ -257,7 +257,7 @@ If in any case the main program fails, it may for some reason not set the output
 
 ## Running a Experiment
 
-***It is highly recommeneded that both data computers are connected to the LAN through an ethernet connection. WIFI IS UNRELIABLE AND ANY MISSED PACKETS IN THE COMMUNICATION BETWEEN THE SERVER HOST AND THE CLIENT RESOLVE IN A PROGRAM CRASH.***
+***It is highly recommeneded that both data computers are connected to the LAN through an ethernet connection. WIFI IS UNRELIABLE AND ANY MISSED PACKETS IN THE COMMUNICATION BETWEEN THE SERVER HOST AND THE CLIENT RESULTS IN A PROGRAM CRASH.***
 
 1. After all the instruments are connected properly and the FC100 is installed in the chamber, open the MultiVu program.
 2. In a powershell window, run
